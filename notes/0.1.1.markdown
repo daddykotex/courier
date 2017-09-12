@@ -1,4 +1,0 @@
-## fixes
-
-* Actually set the `cc` and `bcc` of messages ( cause everyone's gotta know )
-* Not setting a default envelope body was a poor choice.  A default empty body is now provided with all envelopes.
