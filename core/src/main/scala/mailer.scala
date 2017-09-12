@@ -2,7 +2,6 @@ package courier
 
 import javax.mail.{Message, Session => MailSession, Transport}
 import javax.mail.internet.MimeMessage
-import scala.concurrent.{ExecutionContext, Future}
 
 object Mailer {
   def apply(host: String, port: Int): Session.Builder =
@@ -12,7 +11,7 @@ object Mailer {
 case class Mailer(_session: MailSession = Defaults.session) {
   def session = Session.Builder(this)
 
-  def apply(e: Envelope)(implicit ec: ExecutionContext): Future[Unit] = {
+  def apply[F[_]](e: Envelope)(implicit mailerIO: MailerIO[F]): F[Unit] = {
     val msg = new MimeMessage(_session) {
       e.subject.foreach {
         case (subject, Some(charset)) => setSubject(subject, charset.name())
@@ -29,8 +28,20 @@ case class Mailer(_session: MailSession = Defaults.session) {
         case mp: Multipart => setContent(mp.parts)
       }
     }
-    Future {
-      Transport.send(msg)
+    mailerIO.run(Transport.send(msg))
+  }
+}
+
+trait MailerIO[F[_]] {
+  /* Note that f here is blocking */
+  def run(f: => Unit): F[Unit]
+}
+
+object MailerIO {
+  import scala.concurrent.{blocking, ExecutionContext, Future}
+  implicit def futureMailerIO(implicit ec: ExecutionContext): MailerIO[Future] = new MailerIO[Future] {
+    def run(f: => Unit): Future[Unit] = Future {
+      blocking { f }
     }
   }
 }
