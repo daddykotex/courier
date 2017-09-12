@@ -1,8 +1,8 @@
 package courier
 
-import javax.mail.{ Message, Session => MailSession, Transport }
+import javax.mail.{Message, Session => MailSession, Transport}
 import javax.mail.internet.MimeMessage
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 object Mailer {
   def apply(host: String, port: Int): Session.Builder =
@@ -26,7 +26,7 @@ case class Mailer(_session: MailSession = Defaults.session) {
       e.headers.foreach(h => addHeader(h._1, h._2))
       e.contents match {
         case Text(txt, charset) => setText(txt, charset.displayName)
-        case mp : Multipart => setContent(mp.parts)
+        case mp: Multipart => setContent(mp.parts)
       }
     }
     Future {

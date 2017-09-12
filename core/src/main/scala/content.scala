@@ -1,7 +1,7 @@
 package courier
 
-import javax.activation.{ DataHandler, FileDataSource }
-import javax.mail.internet.{ MimeBodyPart, MimeMultipart }
+import javax.activation.{DataHandler, FileDataSource}
+import javax.mail.internet.{MimeBodyPart, MimeMultipart}
 import java.io.File
 import java.nio.charset.Charset
 import javax.mail.util.ByteArrayDataSource
@@ -14,12 +14,11 @@ case class Multipart(_parts: Seq[MimeBodyPart] = Seq.empty[MimeBodyPart], subtyp
   def add(part: MimeBodyPart): Multipart =
     this.copy(_parts = _parts :+ part)
 
-  def add(
-    bytes: Array[Byte],
-    mimetype: String,
-    name: Option[String] = None,
-    disposition: Option[String] = None,
-    description: Option[String] = None): Multipart =
+  def add(bytes: Array[Byte],
+          mimetype: String,
+          name: Option[String] = None,
+          disposition: Option[String] = None,
+          description: Option[String] = None): Multipart =
     add(new MimeBodyPart {
       setContent(bytes, mimetype)
       disposition.foreach(setDisposition)
