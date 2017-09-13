@@ -48,7 +48,6 @@ lazy val bintraySettings = Seq(
 )
 
 lazy val root = (project in file("."))
-  .aggregate(core)
   .settings(inThisBuild(commonSettings ++ bintraySettings))
   .settings(
     inThisBuild(
@@ -56,6 +55,7 @@ lazy val root = (project in file("."))
         publish := {}, //do not publish the root
         name := "courier-core"
       )))
+  .aggregate(core, cats)
 
 lazy val core = (project in file("core"))
   .settings(commonSettings ++ bintraySettings ++ cFlags)
@@ -65,3 +65,14 @@ lazy val core = (project in file("core"))
       "com.sun.mail" % "javax.mail" % "1.6.0"
     )
   )
+
+lazy val cats = (project in file("cats"))
+  .settings(commonSettings ++ bintraySettings ++ cFlags)
+  .settings(
+    name := "courier-for-cats",
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-core"   % "1.0.0-MF",
+      "org.typelevel" %% "cats-effect" % "0.4"
+    )
+  )
+  .dependsOn(core)
