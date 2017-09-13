@@ -1,40 +1,67 @@
-organization := "ch.lightshed"
-
-name := "courier"
-
-version := "0.1.4"
-
-description := "deliver electronic mail with scala"
-
-libraryDependencies ++= Seq(
-  "javax.mail"        % "mail"        % "1.4.7",
-  "javax.activation"  % "activation"  % "1.1.1"
+lazy val commonSettings = Seq(
+  organization := "ch.lightshed",
+  version := "0.2.0",
+  description := "deliver electronic mail with scala",
+  licenses := Seq(("MIT", url(s"https://github.com/softprops/${name.value}/blob/${version.value}/LICENSE"))),
+  homepage := Some(url(s"https://github.com/softprops/${name.value}/#readme")),
+  crossScalaVersions := Seq("2.10.6", "2.11.11", "2.12.3"),
+  scalaVersion := crossScalaVersions.value.last,
+  scalafmtOnCompile := true,
+  pomExtra := (
+    <scm>
+      <url>git@github.com:softprops/courier.git</url>
+      <connection>scm:git:git@github.com:softprops/courier.git</connection>
+    </scm>
+    <developers>
+      <developer>
+        <id>softprops</id>
+        <name>Doug Tangren</name>
+        <url>https://github.com/softprops</url>
+      </developer>
+    </developers>
+  )
+)
+lazy val cFlags = Seq(
+  scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, n)) if n <= 10 =>
+      Seq(
+        "-language:existentials",
+        "-language:higherKinds",
+        "-language:implicitConversions"
+      )
+    case Some((2, n)) if n == 11 =>
+      Seq(
+        "-language:existentials",
+        "-language:higherKinds",
+        "-language:implicitConversions",
+        "-Ypartial-unification"
+      )
+    case _ =>
+      ScalacOptions.All
+  })
 )
 
-licenses := Seq(
-  ("MIT", url(s"https://github.com/softprops/${name.value}/blob/${version.value}/LICENSE")))
+lazy val bintraySettings = Seq(
+  bintrayOrganization := Some("lightshed"),
+  bintrayReleaseOnPublish in ThisBuild := false,
+  bintrayPackageLabels := Seq("email", "mail", "javamail")
+)
 
-homepage := Some(url(s"https://github.com/softprops/${name.value}/#readme"))
+lazy val root = (project in file("."))
+  .aggregate(core)
+  .settings(inThisBuild(commonSettings ++ bintraySettings))
+  .settings(
+    inThisBuild(
+      Seq(
+        publish := {}, //do not publish the root
+        name := "courier-core"
+      )))
 
-crossScalaVersions := Seq("2.10.4", "2.11.8", "2.12.0")
-
-scalaVersion := crossScalaVersions.value.last
-
-bintrayOrganization := Some("lightshed")
-
-bintrayReleaseOnPublish in ThisBuild := false
-
-bintrayPackageLabels := Seq("email", "mail", "javamail")
-
-pomExtra := (
-  <scm>
-    <url>git@github.com:softprops/courier.git</url>
-    <connection>scm:git:git@github.com:softprops/courier.git</connection>
-  </scm>
-  <developers>
-    <developer>
-      <id>softprops</id>
-      <name>Doug Tangren</name>
-      <url>https://github.com/softprops</url>
-    </developer>
-  </developers>)
+lazy val core = (project in file("core"))
+  .settings(commonSettings ++ bintraySettings ++ cFlags)
+  .settings(
+    name := "courier-core",
+    libraryDependencies ++= Seq(
+      "com.sun.mail" % "javax.mail" % "1.6.0"
+    )
+  )
