@@ -21,7 +21,7 @@ object Session {
       copy(_creds = Some((user, pass)))
     def socketFactory(cls: String) = copy(_socketFactory = Some(cls))
     def sslSocketFactory = socketFactory("javax.net.ssl.SSLSocketFactory")
-    def apply() =
+    def apply(): Mailer =
       mailer.copy(
         _session = MailSession.getInstance(
           new Properties {

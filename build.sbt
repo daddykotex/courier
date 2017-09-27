@@ -41,24 +41,18 @@ lazy val cFlags = Seq(
   })
 )
 
-lazy val bintraySettings = Seq(
-  bintrayOrganization := Some("lightshed"),
-  bintrayReleaseOnPublish in ThisBuild := false,
-  bintrayPackageLabels := Seq("email", "mail", "javamail")
-)
-
 lazy val root = (project in file("."))
-  .settings(inThisBuild(commonSettings ++ bintraySettings))
+  .settings(inThisBuild(commonSettings))
   .settings(
     inThisBuild(
       Seq(
         publish := {}, //do not publish the root
         name := "courier-core"
       )))
-  .aggregate(core, cats)
+  .aggregate(core, cats, docs)
 
 lazy val core = (project in file("core"))
-  .settings(commonSettings ++ bintraySettings ++ cFlags)
+  .settings(commonSettings ++ cFlags)
   .settings(
     name := "courier-core",
     libraryDependencies ++= Seq(
@@ -67,12 +61,22 @@ lazy val core = (project in file("core"))
   )
 
 lazy val cats = (project in file("cats"))
-  .settings(commonSettings ++ bintraySettings ++ cFlags)
+  .settings(commonSettings ++ cFlags)
   .settings(
     name := "courier-for-cats",
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-core"   % "1.0.0-MF",
       "org.typelevel" %% "cats-effect" % "0.4"
     )
+  )
+  .dependsOn(core)
+
+lazy val docs = (project in file("docs"))
+  .enablePlugins(TutPlugin)
+  .settings(inThisBuild(commonSettings))
+  .settings(
+    publish := {}, //do not publish the root
+    name := "courier-docs",
+    tutTargetDirectory := file("docs")
   )
   .dependsOn(core)
