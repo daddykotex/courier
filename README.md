@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/daddykotex/courier.svg?branch=master)](https://travis-ci.org/daddykotex/courier)
+
 # courier
 
 This is a fork from [softprops/courier](https://github.com/softprops/courier). There are 2 reasons for the fork:
