@@ -10,7 +10,7 @@ Then you define a mailer instance and an email to send:
 
 ```scala
 scala> val mailer: Mailer = Mailer("smtp.gmail.com", 587).auth(true).as("you@gmail.com", "p@$$w0rd").startTtls(true)()
-mailer: courier.Mailer = Mailer(javax.mail.Session@68c6ff8e)
+mailer: courier.Mailer = Mailer(javax.mail.Session@47aa344a)
 
 scala> val email: Envelope = Envelope.from("you" `@` "gmail.com").to("mom" `@` "gmail.com").cc("dad" `@` "gmail.com").subject("miss you").content(Text("hi mom"))
 email: courier.Envelope = Envelope(you@gmail.com,Some((miss you,None)),List(mom@gmail.com),List(dad@gmail.com),List(),None,None,List(),Text(hi mom,UTF-8))

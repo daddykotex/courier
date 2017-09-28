@@ -1,0 +1,32 @@
+language: scala
+
+matrix:
+  include:
+    - jdk: oraclejdk8
+      scala: 2.10.6
+    - jdk: oraclejdk8
+      scala: 2.11.11
+    - jdk: oraclejdk8
+      scala: 2.12.3
+
+branches:
+  only:
+  - master
+
+before_script:
+  - "if [ $TRAVIS_PULL_REQUEST = 'false' ]; then git checkout -qf $TRAVIS_BRANCH; fi"
+
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION test docs/tut
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION
+    - $HOME/.coursier-cache
+
+after_success:
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
