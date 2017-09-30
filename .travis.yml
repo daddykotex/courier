@@ -6,7 +6,7 @@ before_install:
 before_script:
 - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then git checkout -qf $TRAVIS_BRANCH; fi
 script:
-- sbt $SBT_COMMAND
+- sbt ci release
 cache:
   directories:
   - "$HOME/.ivy2/cache"
