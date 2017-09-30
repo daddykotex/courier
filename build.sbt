@@ -6,11 +6,7 @@ lazy val gpgSettings = Seq(
   usePgpKeyHex("E70E9111FD34D631"),
   pgpPublicRing := file(".") / "project" / ".gnupg" / "pubring.gpg",
   pgpSecretRing := file(".") / "project" / ".gnupg" / "secring.gpg",
-  pgpPassphrase := {
-    val wow = sys.env.get("PGP_PASS").map(_.toArray)
-    println(sys.env.get("SONATYPE_USER")) // TO SEE IF VARIABLES ARE ENCODED CORRECTLY
-    wow
-  }
+  pgpPassphrase := Some("caliss").map(_.toArray)
 )
 
 lazy val publisherSettings = Seq(
