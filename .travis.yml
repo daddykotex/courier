@@ -1,32 +1,36 @@
 language: scala
-
 matrix:
   include:
-    - jdk: oraclejdk8
-      scala: 2.10.6
-    - jdk: oraclejdk8
-      scala: 2.11.11
-    - jdk: oraclejdk8
-      scala: 2.12.3
-
+  - jdk: oraclejdk8
+    scala: 2.10.6
+  - jdk: oraclejdk8
+    scala: 2.11.11
+  - jdk: oraclejdk8
+    scala: 2.12.3
 branches:
   only:
   - master
-
+before_install:
+- openssl aes-256-cbc -K $encrypted_f9502b692882_key -iv $encrypted_f9502b692882_iv
+  -in project/.gnupg/rings.tar.enc -out project/.gnupg/rings.tar -d
+- tar -xvf project/.gnupg/data.tar -C project/.gnupg/
 before_script:
-  - "if [ $TRAVIS_PULL_REQUEST = 'false' ]; then git checkout -qf $TRAVIS_BRANCH; fi"
-
+- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then git checkout -qf $TRAVIS_BRANCH; fi
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION test docs/tut
-  - find $HOME/.sbt -name "*.lock" | xargs rm
-  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
-
+- sbt ++$TRAVIS_SCALA_VERSION test docs/tut
+- find $HOME/.sbt -name "*.lock" | xargs rm
+- find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
 cache:
   directories:
-    - $HOME/.ivy2/cache
-    - $HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION
-    - $HOME/.coursier-cache
-
+  - "$HOME/.ivy2/cache"
+  - "$HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION"
+  - "$HOME/.coursier-cache"
 after_success:
-  - find $HOME/.sbt -name "*.lock" | xargs rm
-  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+- find $HOME/.sbt -name "*.lock" | xargs rm
+- find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+- sbt publish
+env:
+  global:
+  - secure: hlYgCvbTTDZ6pppp4nfiFoHPpFN1HaHZZpXvj8TsLq1PXsw+nXC+TcczZWEMDdNZzS8dCuk8ZXJHpID2/k9D1YtNSh8TdTfXZ9dIhXcEy5kUUBAlBCXDT4183i54/pstv2/3Z1xrjjcpwdvOJPMcY5DYl5ekGZvhabt7BA3beF2KUT/FypOjOxvbDoMW2P1ifbOTE1gI0UjeGblcqDfBChoIHJnVwzJl3E98Nx6vlw2PqfGrHIeZdSdOKaM/JJvzM+9W1DjAOh58V1qpR8514aJyJciYaUH68cHPG3IVJLeqzuIMim/FdizkgK+7sMeSSaIus7o4SWOaNajCj2PGItmtAaJmMP6zGi2B8PE2mpjubJ2iZrhTcww2nZV25VksKL+XuxHC9NcWRXK+oUqtdXk02UIMhjKRvk0mwS0iyFK+4IFotozURXxyqLNmR9UX1EKye9LgUKzRfJP+TH2cSjTlJQcKaAMAFDcb/kqPXDtimv5ioUMwkl/y34v4vEEr6C/xs8AYusUskir1EmRrWWg0yhB9ZBzNg2laeEfKpvhXRtax4F2HuyS6yTfX8cbBg19p34IdUID0GUtZ3x7cIy/ll23ETy/qLcuJ/Wd46txUhE+SlSDrieauCbtidQvLO4aOYC38rN2R2CA7VsT+LkVjOOdIu9OPddVmcR0Uycw=
+  - secure: JUcImsTCzCNJ2sn2YkT8uvQVuol0wvEzYMwsQdT5CQ1aFkSKAFRKCCgdU5VszVTeGTXH+yTSU0sTvKuZR89qfcoaUii0InwG/XenQQ7DAEWV6WIEWXBHsFhFacE7m0HlZvD6lljf/dd/i0xAWFo8jSMppbLqTZ03nSyMX7PJi02OH6pF9lKOHNwZasHHtK9CqPUvW5LbH7Bjz9my8FCIwmubyoQFFrbORcWbNH8p5024zkRsFRV4JDuvXK24a+jLpv0WgWcqOw3d7slroH4ZxpOtCM7jhEObihyEz85cVpnCGSswbPp5HF8o9i9yTxSe1vgJFM1UvcXOOQ5roWY5wVG6DR7SzL8mhZIPhGh5i6TZEtlhHpzqjLnm5+GZgadRkf6hn6OUZoxsH6Au8puiorqmxjKD+dcRxWh51syaCRTwIa4PM+jR/igB06Xlll86rvSeTD75qsBcvmlknHYRETN+r8zMv1sj+8bi3uWisNl87EbGdY/ou1JuhJZeoy3bE2vfY0QQmRKn9nTKFUMtE1cu+Hh8WiPTbrpTrjxXZAL6QJ/4nTGYPeJ2Pn5AEgZ9+htVsXDU09ld/MH/1jdOE0an/zwWa95XK7PdOQRSegO9cKPD6NuhhM9dsl2+95EQeSL+IeOKfPVwpkieWFsoXxIkI07jsQvhO+NvrT27T30=
+  - secure: rh34adYlRiS3N8rOVO0z3LiPaK86tQzHVpsDXtg2f+lu3nJNuXSJh2SnVtYxvKotvtG/QzV4T+4vTZwK2aBZ1E9Y6lxkL4/+qbNErOnRR9wHvPNh1KXjHAIvc6EIUmlNDmYRU0+Aq51ojGjUiQNu7NsuTv6tZKec6tD7wvzFhHPe2mP/HeFgj9FOspmEmOY8GpozX56w0O1KOp5Og/eCGaRV6xhKALrdPQq+DKbg97sYPcmwH1ND9UtFPcgZRlDeh20/LgrHBd4dzQp2Wo+NoMxmluCKAGbZzqVTXxw6FH8RvDx6PAM7+JKnvTcjG4TV4SrpUAGkKHma+zvi0YENO0c4YW7YnvJSxL4Q1zsqEWcpKBwk5JXEOSe/KS3is5JpUDId2khtWs3x0MirbzySZioPv6Z4GzWYg9SeYbWteiZJHhxedSlwIkhRyHkRsyt/7jMQ8/tbncDMbzK6E5xNmk5MbmPjeAX9+WW5O9CxXBAJ26gxCKNasl0DlFRKxwBnypvB1YBLxNBkGmzy8jVCLO0QMEQ1Cngcfqt13KfPJ0nOOb6kJ2Mo8ANItHiAELh3jbNU6Fg5oWIc7qBMxAF0+C2kUmCh1TWmEF0jBB/9CwbYagmXjD16LvYae0o85qlUt9d9+0qvJ/lj7FhzsJZgAuKKsc+JGICQiYLVgtzTSTs=
