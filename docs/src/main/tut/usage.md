@@ -21,9 +21,9 @@ val eventualMailToMom: Future[Unit] =
 ```
 
 If you want to use an alternate effect type, you just need to implement a `MailerIO` instance:
-```
+```tut
 type Id[A] = A
-implicit val idMailerIO: MailerIO[Id] = new MailerIO {
+implicit val idMailerIO: MailerIO[Id] = new MailerIO[Id] {
     def run(f: => Unit): Id[Unit] = Unit
 }
 val otherEffectType: Id[Unit] = mailer(email)
