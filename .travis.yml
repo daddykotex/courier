@@ -5,6 +5,7 @@ before_install:
 - tar -xvf project/.gnupg/rings.tar -C project/.gnupg/
 before_script:
 - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then git checkout -qf $TRAVIS_BRANCH; fi
+- env | grep SONATYPE_USER
 script:
 - sbt +test docs/tut
 - find $HOME/.sbt -name "*.lock" | xargs rm
