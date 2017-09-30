@@ -18,12 +18,13 @@ lazy val publisherSettings = Seq(
     sys.env.getOrElse("SONATYPE_PASS", "")
   ),
   publishMavenStyle := true,
+  isSnapshot := version.value endsWith "SNAPSHOT",
   publishTo := Some(
     if (isSnapshot.value)
       Opts.resolver.sonatypeSnapshots
     else
       Opts.resolver.sonatypeStaging
-  ),
+  )
 )
 
 lazy val releaseSettings = gpgSettings ++ publisherSettings
