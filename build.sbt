@@ -6,7 +6,11 @@ lazy val gpgSettings = Seq(
   usePgpKeyHex("E70E9111FD34D631"),
   pgpPublicRing := file(".") / "project" / ".gnupg" / "pubring.gpg",
   pgpSecretRing := file(".") / "project" / ".gnupg" / "secring.gpg",
-  pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray)
+  pgpPassphrase := {
+    val wow = sys.env.get("PGP_PASS").map(_.toArray)
+    println(sys.env.get("SONATYPE_USER")) // TO SEE IF VARIABLES ARE ENCODED CORRECTLY
+    wow
+  }
 )
 
 lazy val publisherSettings = Seq(
@@ -83,6 +87,7 @@ lazy val doNotPublishArtifact = Seq(
 )
 
 lazy val root = (project in file("."))
+  .aggregate(core, cats, docs)
   .settings(inThisBuild(commonSettings))
   .settings(doNotPublishArtifact)
   .settings(
@@ -90,7 +95,6 @@ lazy val root = (project in file("."))
       Seq(
         name := "courier-core"
       )))
-  .aggregate(core, cats, docs)
 
 lazy val core = (project in file("core"))
   .settings(commonSettings ++ cFlags)
