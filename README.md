@@ -15,7 +15,7 @@ This version introduces a type constructor along with a type class to let you ch
 
 ## usage
 
-See (useage.md)[./docs/usage.md]
+See [usage.md](./docs/usage.md)
 
 deliver electronic mail via gmail
 
