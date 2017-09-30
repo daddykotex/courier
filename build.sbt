@@ -1,3 +1,4 @@
+addCommandAlias("ci", ";test ;project docs ;tut")
 addCommandAlias("release", ";+publishSigned ;sonatypeReleaseAll")
 
 lazy val commonSettings = Seq(

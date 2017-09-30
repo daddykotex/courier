@@ -1,15 +1,24 @@
 language: scala
+matrix:
+  include:
+    - jdk: oraclejdk8
+      scala: 2.10.6
+      ENV: SBT_COMMAND=ci
+    - jdk: oraclejdk8
+      scala: 2.11.11
+      ENV: SBT_COMMAND=ci
+    - jdk: oraclejdk8
+      scala: 2.12.3
+      ENV: SBT_COMMAND=ci release
 before_install:
 - openssl aes-256-cbc -K $encrypted_f9502b692882_key -iv $encrypted_f9502b692882_iv
   -in project/.gnupg/rings.tar.enc -out project/.gnupg/rings.tar -d
 - tar -xvf project/.gnupg/rings.tar -C project/.gnupg/
 before_script:
 - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then git checkout -qf $TRAVIS_BRANCH; fi
-- env | grep SONATYPE_USER
+- echo $(env | grep SONATYPE_USER)
 script:
-- sbt +test docs/tut
-- find $HOME/.sbt -name "*.lock" | xargs rm
-- find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+- sbt ++$TRAVIS_SCALA_VERSION $SBT_COMMAND
 cache:
   directories:
   - "$HOME/.ivy2/cache"
@@ -18,7 +27,6 @@ cache:
 after_success:
 - find $HOME/.sbt -name "*.lock" | xargs rm
 - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
-- sbt release
 env:
   global:
   - secure: Nddxl+vbOdsSgTuM28XdMZHzbEV6ZQKH8JPcLHIUpp5gNV9MwEdRxH0ABs/liUY5J92+bVVbEjoixxx+yD1cTqpNEw77JxBhvAIcRssn8CiW3Ub6uM3lbzDqd7QHJ9FPNmCyAsRPXXboF2e74M1173eMuFZRMgXTbqe+2DngLEC+DxP3e2vJ6llpcPj3OxLeZDhWd4or+JUTb9JtYUXgYdOzvv97F0VEA5WgwKAmA2DOz37r4A7fV1/oX4QOr8c5zSsEOlBxl4uP0SpTZSo0Jfmqg9WgKyWjsnLC69bCAy++sRcaA6Cbxv4EWW+f5BUevcAQoBHNIVk9ssF4KFcwjncE2WGrXxUUkuOZ5v7sQfv4vzAzooHll2UQfeFtn+ppEFeYaWY1KiWuW8KjSaOOLPLLx2LTgRuw1aq21K8ozMxkbFLlpRX0DeYVEbIfuhh53nHYqCxfHXsG9JY3QfNGho1nqWoRGmaGFPXpIf++erH0nieaSk/5V7sktkhMdMYsDl1Z/D1lYqrc7LH70qfcgoh5wKEV8i55VlKms8f6rDmt+lf+C3ZQmGmxjnl3w+nxInsjcc39Cv/AUL0OiUA7hgCewnXB2kRZpzPp3OYeQIU2H0V7ZBe6GB2eq+ixZOODYLzLtGzoIL8B2ABu40yAJs1ymrkSDSPJ4mHwWGDeU4k=
