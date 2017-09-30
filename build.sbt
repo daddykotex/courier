@@ -31,7 +31,7 @@ lazy val releaseSettings = gpgSettings ++ publisherSettings
 
 lazy val commonSettings = releaseSettings ++ Seq(
   organization := "com.github.daddykotex",
-  version := "0.2.0-SNAPSHOT",
+  version := "0.2.1-SNAPSHOT",
   description := "deliver electronic mail with scala",
   licenses := Seq(("MIT", url(s"https://opensource.org/licenses/MIT"))),
   homepage := Some(url(s"https://github.com/daddykotex/${name.value}/#readme")),
