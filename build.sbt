@@ -1,7 +1,34 @@
 addCommandAlias("ci", ";test ;project docs ;tut")
-addCommandAlias("release", ";+publishSigned ;sonatypeReleaseAll")
+addCommandAlias("release", ";project root ;+publishSigned ;sonatypeReleaseAll")
 
-lazy val commonSettings = Seq(
+lazy val gpgSettings = Seq(
+  useGpg := false,
+  usePgpKeyHex("E70E9111FD34D631"),
+  pgpPublicRing := file(".") / "project" / ".gnupg" / "pubring.gpg",
+  pgpSecretRing := file(".") / "project" / ".gnupg" / "secring.gpg",
+  pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray)
+)
+
+lazy val publisherSettings = Seq(
+  sonatypeProfileName := organization.value,
+  credentials += Credentials(
+    "Sonatype Nexus Repository Manager",
+    "oss.sonatype.org",
+    sys.env.getOrElse("SONATYPE_USER", ""),
+    sys.env.getOrElse("SONATYPE_PASS", "")
+  ),
+  publishMavenStyle := true,
+  publishTo := Some(
+    if (isSnapshot.value)
+      Opts.resolver.sonatypeSnapshots
+    else
+      Opts.resolver.sonatypeStaging
+  ),
+)
+
+lazy val releaseSettings = gpgSettings ++ publisherSettings
+
+lazy val commonSettings = releaseSettings ++ Seq(
   organization := "com.github.daddykotex",
   version := "0.2.0-SNAPSHOT",
   description := "deliver electronic mail with scala",
@@ -46,46 +73,26 @@ lazy val cFlags = Seq(
   })
 )
 
-lazy val gpgSettings: Seq[SettingsDefinition] = Seq(
-  useGpg := false,
-  usePgpKeyHex("E70E9111FD34D631"),
-  pgpPublicRing := file(".") / "project" / ".gnupg" / "pubring.gpg",
-  pgpSecretRing := file(".") / "project" / ".gnupg" / "secring.gpg",
-  pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray)
+lazy val doNotPublishArtifact = Seq(
+  publish := {},
+  publishArtifact := false,
+  publishArtifact in (Compile, packageDoc) := false,
+  publishArtifact in (Compile, packageSrc) := false,
+  publishArtifact in (Compile, packageBin) := false
 )
-
-lazy val publisherSettings = Seq(
-  sonatypeProfileName := organization.value,
-  credentials += Credentials(
-    "Sonatype Nexus Repository Manager",
-    "oss.sonatype.org",
-    sys.env.getOrElse("SONATYPE_USER", ""),
-    sys.env.getOrElse("SONATYPE_PASS", "")
-  ),
-  isSnapshot := version.value endsWith "SNAPSHOT",
-  publishTo := Some(
-    if (isSnapshot.value)
-      Opts.resolver.sonatypeSnapshots
-    else
-      Opts.resolver.sonatypeStaging
-  )
-)
-
-lazy val releaseSettings = gpgSettings ++ publisherSettings
 
 lazy val root = (project in file("."))
   .settings(inThisBuild(commonSettings))
+  .settings(doNotPublishArtifact)
   .settings(
     inThisBuild(
       Seq(
-        publish := {}, //do not publish the root
         name := "courier-core"
       )))
   .aggregate(core, cats, docs)
 
 lazy val core = (project in file("core"))
   .settings(commonSettings ++ cFlags)
-  .settings(releaseSettings: _*)
   .settings(
     name := "courier-core",
     libraryDependencies ++= Seq(
@@ -95,7 +102,6 @@ lazy val core = (project in file("core"))
 
 lazy val cats = (project in file("cats"))
   .settings(commonSettings ++ cFlags)
-  .settings(releaseSettings: _*)
   .settings(
     name := "courier-for-cats",
     libraryDependencies ++= Seq(
@@ -108,8 +114,8 @@ lazy val cats = (project in file("cats"))
 lazy val docs = (project in file("docs"))
   .enablePlugins(TutPlugin)
   .settings(inThisBuild(commonSettings))
+  .settings(doNotPublishArtifact)
   .settings(
-    publish := {}, //do not publish the root
     name := "courier-docs",
     tutTargetDirectory := file("docs")
   )
