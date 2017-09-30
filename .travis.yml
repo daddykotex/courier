@@ -1,7 +1,4 @@
 language: scala
-branches:
-  only:
-  - master
 before_install:
 - openssl aes-256-cbc -K $encrypted_f9502b692882_key -iv $encrypted_f9502b692882_iv
   -in project/.gnupg/rings.tar.enc -out project/.gnupg/rings.tar -d
@@ -20,7 +17,7 @@ cache:
 after_success:
 - find $HOME/.sbt -name "*.lock" | xargs rm
 - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
-- sbt publish
+- sbt release
 env:
   global:
   - secure: hlYgCvbTTDZ6pppp4nfiFoHPpFN1HaHZZpXvj8TsLq1PXsw+nXC+TcczZWEMDdNZzS8dCuk8ZXJHpID2/k9D1YtNSh8TdTfXZ9dIhXcEy5kUUBAlBCXDT4183i54/pstv2/3Z1xrjjcpwdvOJPMcY5DYl5ekGZvhabt7BA3beF2KUT/FypOjOxvbDoMW2P1ifbOTE1gI0UjeGblcqDfBChoIHJnVwzJl3E98Nx6vlw2PqfGrHIeZdSdOKaM/JJvzM+9W1DjAOh58V1qpR8514aJyJciYaUH68cHPG3IVJLeqzuIMim/FdizkgK+7sMeSSaIus7o4SWOaNajCj2PGItmtAaJmMP6zGi2B8PE2mpjubJ2iZrhTcww2nZV25VksKL+XuxHC9NcWRXK+oUqtdXk02UIMhjKRvk0mwS0iyFK+4IFotozURXxyqLNmR9UX1EKye9LgUKzRfJP+TH2cSjTlJQcKaAMAFDcb/kqPXDtimv5ioUMwkl/y34v4vEEr6C/xs8AYusUskir1EmRrWWg0yhB9ZBzNg2laeEfKpvhXRtax4F2HuyS6yTfX8cbBg19p34IdUID0GUtZ3x7cIy/ll23ETy/qLcuJ/Wd46txUhE+SlSDrieauCbtidQvLO4aOYC38rN2R2CA7VsT+LkVjOOdIu9OPddVmcR0Uycw=
