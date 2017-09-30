@@ -1,4 +1,4 @@
-package courier
+package com.github.daddykotex.courier
 
 import javax.mail.{Message, Session => MailSession, Transport}
 import javax.mail.internet.MimeMessage

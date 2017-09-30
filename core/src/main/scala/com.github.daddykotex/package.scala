@@ -1,3 +1,5 @@
+package com.github.daddykotex
+
 import javax.mail.internet.InternetAddress
 
 /** An agreeable email interface for scala. */

@@ -1,4 +1,4 @@
-package courier
+package com.github.daddykotex.courier
 
 import javax.activation.{DataHandler, FileDataSource}
 import javax.mail.internet.{MimeBodyPart, MimeMultipart}

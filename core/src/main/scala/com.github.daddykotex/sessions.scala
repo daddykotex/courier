@@ -1,4 +1,4 @@
-package courier
+package com.github.daddykotex.courier
 
 import javax.mail.{PasswordAuthentication, Session => MailSession}
 import java.util.Properties

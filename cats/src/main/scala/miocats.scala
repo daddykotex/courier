@@ -1,7 +1,7 @@
-package courier.miocats
+package com.github.daddykotex.courier.cats
 
 import cats.effect.IO
-import courier.MailerIO
+import com.github.daddykotex.courier.MailerIO
 
 object CatsMailerIO {
   implicit val catsMailerIO: MailerIO[IO] = new MailerIO[IO] {

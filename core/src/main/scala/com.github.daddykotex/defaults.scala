@@ -1,4 +1,4 @@
-package courier
+package com.github.daddykotex.courier
 
 import javax.mail.{Session => MailSession}
 import java.util.Properties

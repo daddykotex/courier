@@ -1,7 +1,8 @@
 We start with some basic imports:
 
 ```tut
-import courier._, Defaults._
+import com.github.daddykotex.courier._
+import com.github.daddykotex.courier.Defaults._
 ```
 
 Then you define a mailer instance and an email to send:
