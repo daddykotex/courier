@@ -45,11 +45,11 @@ lazy val cFlags = Seq(
   })
 )
 
-lazy val gpgSettings = Seq(
+lazy val gpgSettings: Seq[SettingsDefinition] = Seq(
   useGpg := false,
   usePgpKeyHex("E70E9111FD34D631"),
-  pgpPublicRing := baseDirectory.value / "project" / ".gnupg" / "pubring.gpg",
-  pgpSecretRing := baseDirectory.value / "project" / ".gnupg" / "secring.gpg",
+  pgpPublicRing := file(".") / "project" / ".gnupg" / "pubring.gpg",
+  pgpSecretRing := file(".") / "project" / ".gnupg" / "secring.gpg",
   pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray)
 )
 
@@ -83,7 +83,8 @@ lazy val root = (project in file("."))
   .aggregate(core, cats, docs)
 
 lazy val core = (project in file("core"))
-  .settings(commonSettings ++ cFlags ++ releaseSettings)
+  .settings(commonSettings ++ cFlags)
+  .settings(releaseSettings: _*)
   .settings(
     name := "courier-core",
     libraryDependencies ++= Seq(
@@ -92,7 +93,8 @@ lazy val core = (project in file("core"))
   )
 
 lazy val cats = (project in file("cats"))
-  .settings(commonSettings ++ cFlags ++ releaseSettings)
+  .settings(commonSettings ++ cFlags)
+  .settings(releaseSettings: _*)
   .settings(
     name := "courier-for-cats",
     libraryDependencies ++= Seq(

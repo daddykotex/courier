@@ -45,3 +45,5 @@ tm.out
 worker*.log
 /bin
 .creds.sh
+project/.gnupg/secring.gpg
+project/.gnupg/pubring.gpg
