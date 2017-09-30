@@ -70,6 +70,8 @@ lazy val publisherSettings = Seq(
   )
 )
 
+lazy val releaseSettings = gpgSettings ++ publisherSettings
+
 lazy val root = (project in file("."))
   .settings(inThisBuild(commonSettings))
   .settings(
@@ -81,7 +83,7 @@ lazy val root = (project in file("."))
   .aggregate(core, cats, docs)
 
 lazy val core = (project in file("core"))
-  .settings(commonSettings ++ cFlags)
+  .settings(commonSettings ++ cFlags ++ releaseSettings)
   .settings(
     name := "courier-core",
     libraryDependencies ++= Seq(
@@ -90,7 +92,7 @@ lazy val core = (project in file("core"))
   )
 
 lazy val cats = (project in file("cats"))
-  .settings(commonSettings ++ cFlags)
+  .settings(commonSettings ++ cFlags ++ releaseSettings)
   .settings(
     name := "courier-for-cats",
     libraryDependencies ++= Seq(
