@@ -1,4 +1,4 @@
-addCommandAlias("ci", ";test ;project docs ;tut")
+addCommandAlias("ci", ";clean ;+test ;project docs ;tut")
 addCommandAlias("release", ";project root ;+publishSigned ;sonatypeReleaseAll")
 
 lazy val gpgSettings = Seq(

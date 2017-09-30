@@ -1,15 +1,4 @@
 language: scala
-matrix:
-  include:
-  - jdk: oraclejdk8
-    scala: 2.10.6
-    env: SBT_COMMAND='ci'
-  - jdk: oraclejdk8
-    scala: 2.11.11
-    env: SBT_COMMAND='ci'
-  - jdk: oraclejdk8
-    scala: 2.12.3
-    env: SBT_COMMAND='ci release'
 before_install:
 - openssl aes-256-cbc -K $encrypted_f9502b692882_key -iv $encrypted_f9502b692882_iv
   -in project/.gnupg/rings.tar.enc -out project/.gnupg/rings.tar -d
@@ -17,7 +6,7 @@ before_install:
 before_script:
 - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then git checkout -qf $TRAVIS_BRANCH; fi
 script:
-- sbt ++$TRAVIS_SCALA_VERSION $SBT_COMMAND
+- sbt $SBT_COMMAND
 cache:
   directories:
   - "$HOME/.ivy2/cache"
