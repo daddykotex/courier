@@ -4,7 +4,7 @@ before_install:
   -in project/.gnupg/rings.tar.enc -out project/.gnupg/rings.tar -d
 - tar -xvf project/.gnupg/rings.tar -C project/.gnupg/
 script:
-- build.sh
+- ./build.sh
 cache:
   directories:
   - "$HOME/.ivy2/cache"
