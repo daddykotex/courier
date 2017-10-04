@@ -1,4 +1,4 @@
-addCommandAlias("ci", ";clean ;+test ;project docs ;tut")
+addCommandAlias("ci", ";clean ;+test ;project docs ;tutQuick")
 addCommandAlias("release", ";project root ;+publishSigned ;sonatypeReleaseAll")
 
 lazy val gpgSettings = Seq(
@@ -111,12 +111,12 @@ lazy val cats = (project in file("cats"))
   )
   .dependsOn(core)
 
+val genDocs = taskKey[Unit]("Generate the docs to be committed")
 lazy val docs = (project in file("docs"))
   .enablePlugins(TutPlugin)
   .settings(inThisBuild(commonSettings))
   .settings(doNotPublishArtifact)
   .settings(
     name := "courier-docs",
-    tutTargetDirectory := file("docs")
   )
   .dependsOn(core)
