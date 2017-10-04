@@ -47,3 +47,4 @@ worker*.log
 .creds.sh
 project/.gnupg/secring.gpg
 project/.gnupg/pubring.gpg
+project/.gnupg/rings.tar
