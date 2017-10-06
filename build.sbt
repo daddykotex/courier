@@ -117,6 +117,6 @@ lazy val docs = (project in file("docs"))
   .settings(inThisBuild(commonSettings))
   .settings(doNotPublishArtifact)
   .settings(
-    name := "courier-docs",
+    name := "courier-docs"
   )
   .dependsOn(core)
