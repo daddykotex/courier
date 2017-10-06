@@ -18,7 +18,6 @@ lazy val publisherSettings = Seq(
     sys.env.getOrElse("SONATYPE_PASS", "")
   ),
   publishMavenStyle := true,
-  isSnapshot := version.value endsWith "SNAPSHOT",
   publishTo := Some(
     if (isSnapshot.value)
       Opts.resolver.sonatypeSnapshots
@@ -111,7 +110,6 @@ lazy val cats = (project in file("cats"))
   )
   .dependsOn(core)
 
-val genDocs = taskKey[Unit]("Generate the docs to be committed")
 lazy val docs = (project in file("docs"))
   .enablePlugins(TutPlugin)
   .settings(inThisBuild(commonSettings))
