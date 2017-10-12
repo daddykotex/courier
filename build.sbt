@@ -115,6 +115,7 @@ lazy val docs = (project in file("docs"))
   .settings(inThisBuild(commonSettings))
   .settings(doNotPublishArtifact)
   .settings(
-    name := "courier-docs"
+    name := "courier-docs",
+    tutTargetDirectory := sys.env.get("TUTS_TARGET").map(file(_)).getOrElse(crossTarget.value / "tut")
   )
   .dependsOn(core)

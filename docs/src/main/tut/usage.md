@@ -2,7 +2,6 @@ We start with some basic imports:
 
 ```tut
 import com.github.daddykotex.courier._
-import com.github.daddykotex.courier.Defaults._
 ```
 
 Then you define a mailer instance and an email to send:
@@ -17,6 +16,7 @@ val email: Envelope = Envelope.from("you" `@` "gmail.com").to("mom" `@` "gmail.c
 Then you send it:
 ```tut
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 val eventualMailToMom: Future[Unit] =
   mailer(email)
 ```
