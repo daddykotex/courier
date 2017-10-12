@@ -1,3 +1,5 @@
+import sbtdynver.DynVer
+
 addCommandAlias("ci", ";clean ;+test ;project docs ;tutQuick")
 addCommandAlias("release", ";project root ;+publishSigned ;sonatypeReleaseAll")
 
@@ -28,7 +30,9 @@ lazy val publisherSettings = Seq(
 
 lazy val releaseSettings = gpgSettings ++ publisherSettings
 
+def addSuffix(v: String): String = v + (if (DynVer.isSnapshot && !v.endsWith("-SNAPSHOT")) "-SNAPSHOT" else "")
 lazy val commonSettings = releaseSettings ++ Seq(
+  version ~= (addSuffix(_).replace('+', '-')),
   organization := "com.github.daddykotex",
   description := "deliver electronic mail with scala",
   licenses := Seq(("MIT", url(s"https://opensource.org/licenses/MIT"))),
