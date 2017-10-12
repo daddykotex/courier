@@ -1,4 +1,4 @@
-package com.github.daddykotex.courier.cats
+package com.github.daddykotex.courier.miocats
 
 import cats.effect.IO
 import com.github.daddykotex.courier.MailerIO
