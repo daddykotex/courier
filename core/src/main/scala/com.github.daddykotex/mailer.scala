@@ -1,6 +1,7 @@
 package com.github.daddykotex.courier
 
 import javax.mail.{Message, Session => MailSession, Transport}
+import java.util.Properties
 import javax.mail.internet.MimeMessage
 
 object Mailer {
@@ -8,7 +9,7 @@ object Mailer {
     Mailer().session.host(host).port(port)
 }
 
-case class Mailer(_session: MailSession = Defaults.session) {
+case class Mailer(_session: MailSession = MailSession.getDefaultInstance(new Properties())) {
   def session = Session.Builder(this)
 
   def apply[F[_]](e: Envelope)(implicit mailerIO: MailerIO[F]): F[Unit] = {
