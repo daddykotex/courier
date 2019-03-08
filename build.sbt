@@ -80,9 +80,20 @@ lazy val root = (project in file("."))
   .settings(
     name := "courier",
     libraryDependencies ++= Seq(
-      "com.sun.mail"      % "javax.mail"      % "1.6.2",
-      "javax.activation"  % "activation"      % "1.1.1",
-      "org.bouncycastle"  % "bcpkix-jdk15on"  % "1.60" % Optional,
-      "org.bouncycastle"  % "bcmail-jdk15on"  % "1.60" % Optional
+      "com.sun.mail"            %  "javax.mail"       % "1.6.2",
+      "javax.activation"        %  "activation"       % "1.1.1",
+      "org.bouncycastle"        %  "bcpkix-jdk15on"   % "1.60"   % Optional,
+      "org.bouncycastle"        %  "bcmail-jdk15on"   % "1.60"   % Optional,
+
+      "org.scalatest"           %% "scalatest"        % "3.0.5"  % Test,
+      "org.scalactic"           %% "scalactic"        % "3.0.5"  % Test,
+      "org.jvnet.mock-javamail" %  "mock-javamail"    % "1.9"    % Test
+    )
+  )
+  .settings(
+    (fork in Test) := true,
+    (javaOptions in Test) ++= Seq(
+      "-Dmail.transport.protocol=mocked",
+      "-Dmail.transport.protocol.rfc822=mocked"
     )
   )
