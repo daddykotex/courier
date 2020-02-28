@@ -20,8 +20,13 @@ lazy val publisherSettings = Seq(
 )
 
 lazy val releaseSettings = publisherSettings ++ credentialSettings
+lazy val noReleaseSettings = Seq(
+  publish := {},
+  publishTo := None,
+  credentials := Seq.empty
+)
 
-lazy val commonSettings = releaseSettings ++ Seq(
+lazy val commonSettings = Seq(
   version := "2.0.0",
   organization := "com.github.daddykotex",
   description := "deliver electronic mail with scala",
@@ -83,6 +88,7 @@ lazy val cFlags = Seq(
 lazy val scalaTestVersion = "3.1.1"
 
 lazy val root = (project in file("."))
+  .settings(releaseSettings)
   .settings(commonSettings ++ cFlags)
   .settings(
     name := "courier",
@@ -96,3 +102,10 @@ lazy val root = (project in file("."))
       "org.jvnet.mock-javamail" % "mock-javamail" % "1.9" % Test
     )
   )
+
+  lazy val examples = (project in file("examples"))
+  .settings(noReleaseSettings)
+  .settings(commonSettings ++ cFlags)
+  .settings(
+    name := "courier-examples"
+  ).dependsOn(root)
