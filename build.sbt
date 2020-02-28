@@ -27,7 +27,7 @@ lazy val commonSettings = releaseSettings ++ Seq(
   description := "deliver electronic mail with scala",
   licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT"))),
   homepage := Some(url("https://github.com/dmurvihill/courier")),
-  crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0"),
+  crossScalaVersions := Seq("2.12.10", "2.13.1"),
   scalaVersion := crossScalaVersions.value.last,
   scmInfo := Some(
     ScmInfo(
@@ -80,7 +80,7 @@ lazy val cFlags = Seq(
   })
 )
 
-lazy val scalaTestVersion = "3.0.8"
+lazy val scalaTestVersion = "3.1.1"
 
 lazy val root = (project in file("."))
   .settings(commonSettings ++ cFlags)
@@ -89,8 +89,8 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "com.sun.mail"      % "javax.mail"      % "1.6.2",
       "javax.activation"  % "activation"      % "1.1.1",
-      "org.bouncycastle"  % "bcpkix-jdk15on"  % "1.61" % Optional,
-      "org.bouncycastle"  % "bcmail-jdk15on"  % "1.61" % Optional,
+      "org.bouncycastle"  % "bcpkix-jdk15on"  % "1.64" % Optional,
+      "org.bouncycastle"  % "bcmail-jdk15on"  % "1.64" % Optional,
       "org.scalactic"     %% "scalactic"      % scalaTestVersion % Test,
       "org.scalatest"     %% "scalatest"      % scalaTestVersion % Test,
       "org.jvnet.mock-javamail" % "mock-javamail" % "1.9" % Test

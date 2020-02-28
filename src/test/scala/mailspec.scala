@@ -12,7 +12,7 @@ import scala.concurrent.duration._
 
 class MockedSMTPProvider extends Provider(Provider.Type.TRANSPORT, "mocked", classOf[MockTransport].getName, "Mock", null)
 
-class MailSpec extends WordSpec {
+class MailSpec extends wordspec.AnyWordSpec {
   private val mockedSession = javax.mail.Session.getDefaultInstance(new Properties() {{
     put("mail.transport.protocol.rfc822", "mocked")
   }})
